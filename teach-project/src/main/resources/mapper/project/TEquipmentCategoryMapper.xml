@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TEquipmentCategoryMapper">
+    
+    <resultMap type="com.hlzt.project.domain.TEquipmentCategory" id="TEquipmentCategoryResult">
+        <result property="equipmentId"    column="equipment_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="code"    column="code"    />
+        <result property="type"    column="type"    />
+        <result property="name"    column="name"    />
+        <result property="unit"    column="unit"    />
+        <result property="technicalData"    column="technical_data"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="level"    column="level"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectTEquipmentCategoryVo">
+        select equipment_id, parent_id, code, type, name, unit, technical_data, order_num, level, create_by, create_time, update_by, update_time, remark, del_flag, state from t_equipment_category
+    </sql>
+
+    <select id="selectTEquipmentCategoryList" parameterType="com.hlzt.project.domain.TEquipmentCategory" resultMap="TEquipmentCategoryResult">
+        <include refid="selectTEquipmentCategoryVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="technicalData != null  and technicalData != ''"> and technical_data = #{technicalData}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="state != null "> and state = #{state}</if>
+        </where>
+        order by order_num
+    </select>
+    
+    <select id="selectTEquipmentCategoryById" parameterType="Long" resultMap="TEquipmentCategoryResult">
+        <include refid="selectTEquipmentCategoryVo"/>
+        where equipment_id = #{equipmentId}
+    </select>
+        
+    <insert id="insertTEquipmentCategory" parameterType="com.hlzt.project.domain.TEquipmentCategory">
+        insert into t_equipment_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="equipmentId != null">equipment_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="type != null">type,</if>
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="unit != null">unit,</if>
+            <if test="technicalData != null">technical_data,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="level != null">level,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="state != null">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="equipmentId != null">#{equipmentId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="technicalData != null">#{technicalData},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="level != null">#{level},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="state != null">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTEquipmentCategory" parameterType="com.hlzt.project.domain.TEquipmentCategory">
+        update t_equipment_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="technicalData != null">technical_data = #{technicalData},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where equipment_id = #{equipmentId}
+    </update>
+
+    <delete id="deleteTEquipmentCategoryById" parameterType="Long">
+        delete from t_equipment_category where equipment_id = #{equipmentId}
+    </delete>
+
+    <delete id="deleteTEquipmentCategoryByIds" parameterType="String">
+        delete from t_equipment_category where equipment_id in
+        <foreach item="equipmentId" collection="array" open="(" separator="," close=")">
+            #{equipmentId}
+        </foreach>
+    </delete>
+</mapper>

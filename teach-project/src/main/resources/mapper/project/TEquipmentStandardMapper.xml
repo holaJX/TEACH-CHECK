@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TEquipmentStandardMapper">
+    
+    <resultMap type="com.hlzt.project.domain.TEquipmentStandard" id="TEquipmentStandardResult">
+        <result property="equipmentId"    column="equipment_id"    />
+        <result property="standardId"    column="standard_id"    />
+    </resultMap>
+
+    <sql id="selectTEquipmentStandardVo">
+        select equipment_id, standard_id from t_equipment_standard
+    </sql>
+
+    <select id="selectTEquipmentStandardList" parameterType="com.hlzt.project.domain.TEquipmentStandard" resultMap="TEquipmentStandardResult">
+        <include refid="selectTEquipmentStandardVo"/>
+        <where>  
+            <if test="equipmentId != null "> and equipment_id = #{equipmentId}</if>
+            <if test="standardId != null "> and standard_id = #{standardId}</if>
+        </where>
+    </select>
+    
+    <select id="selectTEquipmentStandardById" parameterType="Long" resultMap="TEquipmentStandardResult">
+        <include refid="selectTEquipmentStandardVo"/>
+        where equipment_id = #{equipmentId} and standard_id = #{standardId}
+    </select>
+        
+    <insert id="insertTEquipmentStandard" parameterType="com.hlzt.project.domain.TEquipmentStandard">
+        insert into t_equipment_standard
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="equipmentId != null">equipment_id,</if>
+            <if test="standardId != null">standard_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="equipmentId != null">#{equipmentId},</if>
+            <if test="standardId != null">#{standardId},</if>
+         </trim>
+    </insert>
+
+    <insert id="batchTEquipmentStandard">
+        insert into t_equipment_standard(equipment_id, standard_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.equipmentId},#{item.standardId})
+        </foreach>
+    </insert>
+
+    <update id="updateTEquipmentStandard" parameterType="com.hlzt.project.domain.TEquipmentStandard">
+        update t_equipment_standard
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="standardId != null">standard_id = #{standardId},</if>
+        </trim>
+        where equipment_id = #{equipmentId}
+    </update>
+
+    <delete id="deleteTEquipmentStandardByEquipmentId" parameterType="Long">
+        delete from t_equipment_standard where equipment_id = #{equipmentId}
+    </delete>
+
+    <delete id="deleteTEquipmentStandardByStandardId" parameterType="Long">
+        delete from t_equipment_standard where standard_id = #{standardId}
+    </delete>
+
+    <delete id="deleteTEquipmentStandardByEquipmentIds" parameterType="String">
+        delete from t_equipment_standard where equipment_id in
+        <foreach item="equipmentId" collection="array" open="(" separator="," close=")">
+            #{equipmentId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteTEquipmentStandardByStandardIds" parameterType="String">
+        delete from t_equipment_standard where standard_id in
+        <foreach item="standardId" collection="array" open="(" separator="," close=")">
+            #{standardId}
+        </foreach>
+    </delete>
+</mapper>

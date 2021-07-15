@@ -1,0 +1,8 @@
+/.idea
+/teach-admin/target/
+/teach-common/target/
+/teach-framework/target/
+/teach-generator/target/
+/teach-project/target/
+/teach-quartz/target/
+/teach-system/target/

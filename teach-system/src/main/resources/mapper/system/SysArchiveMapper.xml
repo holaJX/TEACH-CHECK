@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.system.mapper.SysArchiveMapper">
+    
+    <resultMap type="SysArchive" id="SysArchiveResult">
+        <result property="archiveId"    column="archive_id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="size"    column="size"    />
+        <result property="url"    column="url"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysArchiveVo">
+        select archive_id, name, type, size, url, create_by, create_time, update_by, update_time, remark from sys_archive
+    </sql>
+
+    <select id="selectSysArchiveList" parameterType="SysArchive" resultMap="SysArchiveResult">
+        <include refid="selectSysArchiveVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysArchiveById" parameterType="Long" resultMap="SysArchiveResult">
+        <include refid="selectSysArchiveVo"/>
+        where archive_id = #{archiveId}
+    </select>
+        
+    <insert id="insertSysArchive" parameterType="SysArchive">
+        insert into sys_archive
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="archiveId != null">archive_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="size != null">size,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="archiveId != null">#{archiveId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="size != null">#{size},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysArchive" parameterType="SysArchive">
+        update sys_archive
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where archive_id = #{archiveId}
+    </update>
+
+    <delete id="deleteSysArchiveById" parameterType="Long">
+        delete from sys_archive where archive_id = #{archiveId}
+    </delete>
+
+    <delete id="deleteSysArchiveByIds" parameterType="String">
+        delete from sys_archive where archive_id in 
+        <foreach item="archiveId" collection="array" open="(" separator="," close=")">
+            #{archiveId}
+        </foreach>
+    </delete>
+</mapper>

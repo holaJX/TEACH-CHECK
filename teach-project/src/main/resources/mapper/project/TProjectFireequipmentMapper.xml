@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TProjectFireequipmentMapper">
+
+    <resultMap type="com.hlzt.project.domain.TProjectFireequipment" id="TProjectFireequipmentResult">
+        <result property="fireEquipmentId" column="fire_equipment_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="useNature" column="use_nature"/>
+        <result property="equipmentCategoryId" column="equipment_category_id"/>
+        <result property="manufacturer" column="manufacturer"/>
+        <result property="equipmentName" column="equipment_name"/>
+        <result property="specification" column="specification"/>
+        <result property="setNumber" column="set_number"/>
+        <result property="productDate" column="product_date"/>
+        <result property="setLocation" column="set_location"/>
+        <result property="technicalParameter" column="technical_parameter"/>
+        <result property="setAreaValue" column="set_area_value"/>
+        <result property="setAreaLabel" column="set_area_label"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="createBy" column="create_by"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="state" column="state"/>
+    </resultMap>
+
+    <sql id="selectTProjectFireequipmentVo">
+        select fire_equipment_id,
+               dept_id,
+               use_nature,
+               equipment_category_id,
+               manufacturer,
+               equipment_name,
+               specification,
+               set_number,
+               product_date,
+               set_location,
+               technical_parameter,
+               set_area_value,
+               set_area_label,
+               image_url,
+               create_by,
+               type,
+               create_time,
+               update_by,
+               update_time,
+               remark,
+               del_flag,
+               state
+        from t_dept_fireequipment
+    </sql>
+
+    <select id="selectTProjectFireequipmentList" parameterType="com.hlzt.project.domain.TProjectFireequipment"
+            resultMap="TProjectFireequipmentResult">
+        <include refid="selectTProjectFireequipmentVo"/>
+        <where>
+            <if test="equipmentCategoryId != null ">and FIND_IN_SET(#{equipmentCategoryId},equipment_category_id)</if>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="manufacturer != null  and manufacturer != ''">and manufacturer like concat('%', #{manufacturer},
+                '%')
+            </if>
+            <if test="equipmentName != null  and equipmentName != ''">and equipment_name like concat('%',
+                #{equipmentName}, '%')
+            </if>
+            <if test="specification != null  and specification != ''">and specification like concat('%',
+                #{specification}, '%')
+            </if>
+            <if test="setNumber != null ">and set_number = #{setNumber}</if>
+            <if test="productDate != null ">and product_date = #{productDate}</if>
+            <if test="setLocation != null  and setLocation != ''">and set_location = #{setLocation}</if>
+            <if test="setAreaValue != null  and setAreaValue != ''">and set_area_value like concat('%', #{setAreaValue},
+                '%')
+            </if>
+            <if test="setAreaLabel != null  and setAreaLabel != ''">and set_area_label like concat('%', #{setAreaLabel},
+                '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTProjectFireequipmentById" parameterType="Long" resultMap="TProjectFireequipmentResult">
+        <include refid="selectTProjectFireequipmentVo"/>
+        where fire_equipment_id = #{fireEquipmentId}
+    </select>
+
+    <select id="listPosition" parameterType="com.hlzt.common.core.domain.CommonEntity"
+            resultType="com.hlzt.common.core.domain.CommonEntity">
+
+        SELECT b.type, b.b.value, b.label
+        FROM (
+                 SELECT dept_id,construct_type as type, construct_id as value,build_name as label
+                 FROM t_dept_construct where construct_type=0
+                 UNION all
+                 SELECT dept_id,construct_type as type, construct_id as value, storage_position as label
+                 FROM t_dept_construct where construct_type=1
+                 UNION all
+                 SELECT dept_id,construct_type as type, construct_id as value, yard_name as  label
+                 FROM t_dept_construct where construct_type=2
+             ) b
+        WHERE b.dept_id =  #{deptId}
+    </select>
+
+    <insert id="insertTProjectFireequipment" parameterType="com.hlzt.project.domain.TProjectFireequipment">
+        insert into t_dept_fireequipment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fireEquipmentId != null">fire_equipment_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="useNature != null">use_nature,</if>
+            <if test="equipmentCategoryId != null">equipment_category_id,</if>
+            <if test="manufacturer != null">manufacturer,</if>
+            <if test="equipmentName != null">equipment_name,</if>
+            <if test="specification != null">specification,</if>
+            <if test="setNumber != null">set_number,</if>
+            <if test="productDate != null">product_date,</if>
+            <if test="setLocation != null">set_location,</if>
+            <if test="technicalParameter != null">technical_parameter,</if>
+            <if test="setAreaValue != null">set_area_value,</if>
+            <if test="setAreaLabel != null">set_area_label,</if>
+            <if test="imageUrl != null">image_url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="type != null">type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="state != null">state,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fireEquipmentId != null">#{fireEquipmentId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="useNature != null">#{useNature},</if>
+            <if test="equipmentCategoryId != null">#{equipmentCategoryId},</if>
+            <if test="manufacturer != null">#{manufacturer},</if>
+            <if test="equipmentName != null">#{equipmentName},</if>
+            <if test="specification != null">#{specification},</if>
+            <if test="setNumber != null">#{setNumber},</if>
+            <if test="productDate != null">#{productDate},</if>
+            <if test="setLocation != null">#{setLocation},</if>
+            <if test="technicalParameter != null">#{technicalParameter},</if>
+            <if test="setAreaValue != null">#{setAreaValue},</if>
+            <if test="setAreaLabel != null">#{setAreaLabel},</if>
+            <if test="imageUrl != null">#{imageUrl},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="state != null">#{state},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTProjectFireequipment" parameterType="com.hlzt.project.domain.TProjectFireequipment">
+        update t_dept_fireequipment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="useNature != null">use_nature = #{useNature},</if>
+            <if test="equipmentCategoryId != null">equipment_category_id = #{equipmentCategoryId},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="equipmentName != null">equipment_name = #{equipmentName},</if>
+            <if test="specification != null">specification = #{specification},</if>
+            <if test="setNumber != null">set_number = #{setNumber},</if>
+            <if test="productDate != null">product_date = #{productDate},</if>
+            <if test="setLocation != null">set_location = #{setLocation},</if>
+            <if test="technicalParameter != null">technical_parameter = #{technicalParameter},</if>
+            <if test="setAreaValue != null">set_area_value = #{setAreaValue},</if>
+            <if test="setAreaLabel != null">set_area_label = #{setAreaLabel},</if>
+            <if test="imageUrl != null">image_url = #{imageUrl},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where fire_equipment_id = #{fireEquipmentId}
+    </update>
+
+    <delete id="deleteTProjectFireequipmentById" parameterType="Long">
+        delete
+        from t_dept_fireequipment
+        where fire_equipment_id = #{fireEquipmentId}
+    </delete>
+
+    <delete id="deleteTProjectFireequipmentByIds" parameterType="String">
+        delete from t_dept_fireequipment where fire_equipment_id in
+        <foreach item="fireEquipmentId" collection="array" open="(" separator="," close=")">
+            #{fireEquipmentId}
+        </foreach>
+    </delete>
+</mapper>

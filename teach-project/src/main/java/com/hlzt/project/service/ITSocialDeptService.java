@@ -1,0 +1,60 @@
+package com.hlzt.project.service;
+
+import java.util.List;
+import com.hlzt.project.domain.TSocialDept;
+
+/**
+ * 单位基本信息Service接口
+ * 
+ * @author slx
+ * @date 2021-07-02
+ */
+public interface ITSocialDeptService {
+    /**
+     * 查询单位基本信息
+     * 
+     * @param deptId 单位基本信息ID
+     * @return 单位基本信息
+     */
+    public TSocialDept selectTSocialDeptById(Long deptId);
+
+    /**
+     * 查询单位基本信息列表
+     * 
+     * @param tSocialDept 单位基本信息
+     * @return 单位基本信息集合
+     */
+    public List<TSocialDept> selectTSocialDeptList(TSocialDept tSocialDept);
+
+    /**
+     * 新增单位基本信息
+     * 
+     * @param tSocialDept 单位基本信息
+     * @return 结果
+     */
+    public int insertTSocialDept(TSocialDept tSocialDept);
+
+    /**
+     * 修改单位基本信息
+     * 
+     * @param tSocialDept 单位基本信息
+     * @return 结果
+     */
+    public int updateTSocialDept(TSocialDept tSocialDept);
+
+    /**
+     * 批量删除单位基本信息
+     * 
+     * @param deptIds 需要删除的单位基本信息ID
+     * @return 结果
+     */
+    public int deleteTSocialDeptByIds(Long[] deptIds);
+
+    /**
+     * 删除单位基本信息信息
+     * 
+     * @param deptId 单位基本信息ID
+     * @return 结果
+     */
+    public int deleteTSocialDeptById(Long deptId);
+}

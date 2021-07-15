@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.system.mapper.SysRegionMapper">
+    
+    <resultMap type="SysRegion" id="SysRegionResult">
+        <result property="id"    column="id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="agencyId"    column="agency_id"    />
+    </resultMap>
+
+    <sql id="selectSysRegionVo">
+        select id, parent_id, name, type, order_num, agency_id from sys_region
+    </sql>
+
+    <select id="selectSysRegionList" parameterType="SysRegion" resultMap="SysRegionResult">
+        <include refid="selectSysRegionVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+        </where>
+        order by order_num
+    </select>
+
+    <select id="selectSysRegionListByAgencyId" parameterType="long" resultMap="SysRegionResult">
+        <include refid="selectSysRegionVo"/>
+        <where>
+            <if test="agencyId != null "> and agency_id like concat('', #{agencyId}, '%')</if>
+        </where>
+        order by order_num
+    </select>
+
+    <select id="selectAll" resultType="hashMap">
+        select id, parent_id parentId, name label, agency_id value from sys_region where type > 3
+    </select>
+    
+    <select id="selectSysRegionById" parameterType="Long" resultMap="SysRegionResult">
+        <include refid="selectSysRegionVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectSysRegionListNumber" parameterType="Long" resultType="Integer">
+        select count(*) from sys_region where parent_id = #{parentId}
+    </select>
+        
+    <insert id="insertSysRegion" parameterType="SysRegion" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_region
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">parent_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="type != null">type,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="agencyId != null">agency_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="parentId != null">#{parentId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="agencyId != null">#{agencyId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysRegion" parameterType="SysRegion">
+        update sys_region
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="agencyId != null">agency_id = #{agencyId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysRegionById" parameterType="Long">
+        delete from sys_region where id = #{id}
+    </delete>
+
+    <delete id="deleteSysRegionByIds" parameterType="String">
+        delete from sys_region where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

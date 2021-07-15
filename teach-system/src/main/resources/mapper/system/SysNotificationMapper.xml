@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.system.mapper.SysNotificationMapper">
+
+    <resultMap type="SysNotification" id="SysNotificationResult">
+        <result property="notificationId"    column="notification_id"    />
+        <result property="notificationTitle"    column="notification_title"    />
+        <result property="notificationType"    column="notification_type"    />
+        <result property="notificationContent"    column="notification_content"    />
+        <result property="poster"    column="poster"    />
+        <result property="status"    column="status"    />
+        <result property="pusher"    column="pusher"    />
+        <result property="pushState"    column="push_state"    />
+        <result property="receiver"    column="receiver"    />
+        <result property="receiverDept"    column="receiver_dept"    />
+        <result property="receiverState"    column="receiver_state"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysNotificationVo">
+        select notification_id, notification_title, notification_type, notification_content, poster, status, pusher, push_state, receiver, receiver_dept, receiver_state, create_by, create_time, update_by, update_time, remark from sys_notification
+    </sql>
+
+    <select id="selectSysNotificationList" parameterType="SysNotification" resultMap="SysNotificationResult">
+        <include refid="selectSysNotificationVo"/>
+        <where>
+            <if test="notificationTitle != null  and notificationTitle != ''"> and notification_title = #{notificationTitle}</if>
+            <if test="notificationType != null  and notificationType != ''"> and notification_type = #{notificationType}</if>
+            <if test="notificationContent != null  and notificationContent != ''"> and notification_content = #{notificationContent}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="pusher != null "> and pusher = #{pusher}</if>
+            <if test="pushState != null  and pushState != ''"> and push_state = #{pushState}</if>
+            <if test="receiver != null"> and receiver = #{receiver}</if>
+            <if test="receiverDept != null and editStatus != '1' "> and FIND_IN_SET(#{receiverDept},receiver_dept) </if>
+            <if test="receiverDept != null and editStatus == '1' "> or FIND_IN_SET(#{receiverDept},receiver_dept) </if>
+            <if test="receiverState != null  and receiverState != ''"> and receiver_state = #{receiverState}</if>
+        </where>
+        order by notification_id desc, receiver_state desc
+    </select>
+
+    <select id="selectSysNotificationById" parameterType="Long" resultMap="SysNotificationResult">
+        <include refid="selectSysNotificationVo"/>
+        where notification_id = #{notificationId}
+    </select>
+
+    <insert id="insertSysNotification" parameterType="SysNotification" useGeneratedKeys="true" keyProperty="notificationId">
+        insert into sys_notification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="notificationTitle != null and notificationTitle != ''">notification_title,</if>
+            <if test="notificationType != null and notificationType != ''">notification_type,</if>
+            <if test="notificationContent != null">notification_content,</if>
+            <if test="poster != null">poster,</if>
+            <if test="status != null">status,</if>
+            <if test="pusher != null">pusher,</if>
+            <if test="pushState != null">push_state,</if>
+            <if test="receiverDept != null">receiver_dept,</if>
+            <if test="receiver != null">receiver,</if>
+            <if test="receiverState != null">receiver_state,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="notificationTitle != null and notificationTitle != ''">#{notificationTitle},</if>
+            <if test="notificationType != null and notificationType != ''">#{notificationType},</if>
+            <if test="notificationContent != null">#{notificationContent},</if>
+            <if test="poster != null">#{poster},</if>
+            <if test="status != null">#{status},</if>
+            <if test="pusher != null">#{pusher},</if>
+            <if test="pushState != null">#{pushState},</if>
+            <if test="receiverDept != null">#{receiverDept},</if>
+            <if test="receiver != null">#{receiver},</if>
+            <if test="receiverState != null">#{receiverState},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysNotification" parameterType="SysNotification">
+        update sys_notification
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="notificationTitle != null and notificationTitle != ''">notification_title = #{notificationTitle},</if>
+            <if test="notificationType != null and notificationType != ''">notification_type = #{notificationType},</if>
+            <if test="notificationContent != null">notification_content = #{notificationContent},</if>
+            <if test="poster != null">poster = #{poster},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="pusher != null">pusher = #{pusher},</if>
+            <if test="pushState != null">push_state = #{pushState},</if>
+            <if test="receiverDept != null">receiver_dept = #{receiverDept},</if>
+            <if test="receiver != null">receiver = #{receiver},</if>
+            <if test="receiverState != null">receiver_state = #{receiverState},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where notification_id = #{notificationId}
+    </update>
+
+    <delete id="deleteSysNotificationById" parameterType="Long">
+        delete from sys_notification where notification_id = #{notificationId}
+    </delete>
+
+    <delete id="deleteSysNotificationByIds" parameterType="String">
+        delete from sys_notification where notification_id in
+        <foreach item="notificationId" collection="array" open="(" separator="," close=")">
+            #{notificationId}
+        </foreach>
+    </delete>
+</mapper>

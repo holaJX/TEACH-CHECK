@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TFireProductMapper">
+    
+    <resultMap type="com.hlzt.project.domain.TFireProduct" id="TFireProductResult">
+        <result property="fireProductId"    column="fire_product_id"    />
+        <result property="equipType"    column="equip_type"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="productName"    column="product_name"    />
+        <result property="specification"    column="specification"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTFireProductVo">
+        select fire_product_id, equip_type, manufacturer, product_name, specification, create_by, create_time, update_by, update_time from t_fire_product
+    </sql>
+
+    <select id="selectTFireProductList" parameterType="com.hlzt.project.domain.TFireProduct" resultMap="TFireProductResult">
+        <include refid="selectTFireProductVo"/>
+        <where>  
+            <if test="equipType != null "> and equip_type = #{equipType}</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer like concat('%', #{manufacturer}, '%')</if>
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="specification != null  and specification != ''"> and specification like concat('%', #{specification}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTFireProductById" parameterType="Long" resultMap="TFireProductResult">
+        <include refid="selectTFireProductVo"/>
+        where fire_product_id = #{fireProductId}
+    </select>
+        
+    <insert id="insertTFireProduct" parameterType="com.hlzt.project.domain.TFireProduct">
+        insert into t_fire_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fireProductId != null">fire_product_id,</if>
+            <if test="equipType != null">equip_type,</if>
+            <if test="manufacturer != null and manufacturer != ''">manufacturer,</if>
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="specification != null and specification != ''">specification,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fireProductId != null">#{fireProductId},</if>
+            <if test="equipType != null">#{equipType},</if>
+            <if test="manufacturer != null and manufacturer != ''">#{manufacturer},</if>
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="specification != null and specification != ''">#{specification},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTFireProduct" parameterType="com.hlzt.project.domain.TFireProduct">
+        update t_fire_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="equipType != null">equip_type = #{equipType},</if>
+            <if test="manufacturer != null and manufacturer != ''">manufacturer = #{manufacturer},</if>
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="specification != null and specification != ''">specification = #{specification},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where fire_product_id = #{fireProductId}
+    </update>
+
+    <delete id="deleteTFireProductById" parameterType="Long">
+        delete from t_fire_product where fire_product_id = #{fireProductId}
+    </delete>
+
+    <delete id="deleteTFireProductByIds" parameterType="String">
+        delete from t_fire_product where fire_product_id in
+        <foreach item="fireProductId" collection="array" open="(" separator="," close=")">
+            #{fireProductId}
+        </foreach>
+    </delete>
+</mapper>

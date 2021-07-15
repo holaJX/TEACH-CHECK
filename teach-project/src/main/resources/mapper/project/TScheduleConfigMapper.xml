@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TScheduleConfigMapper">
+    
+    <resultMap type="TScheduleConfig" id="TScheduleConfigResult">
+        <result property="scheduleId"    column="schedule_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="scheduleType"    column="schedule_type"    />
+        <result property="scheduleName"    column="schedule_name"    />
+        <result property="scheduleFrequency"    column="schedule_frequency"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="createUsername"    column="create_username"    />
+        <result property="applyRange"    column="apply_range"    />
+        <result property="applyStandard"    column="apply_standard"    />
+        <result property="applyObject"    column="apply_object"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectTScheduleConfigVo">
+        select schedule_id, dept_id, schedule_type, schedule_name, schedule_frequency, start_time, end_time, create_username, apply_range, apply_standard, apply_object, create_by, create_time, update_by, update_time, remark, delete_flag, state from t_schedule_config
+    </sql>
+
+    <select id="selectTScheduleConfigList" parameterType="TScheduleConfig" resultMap="TScheduleConfigResult">
+        <include refid="selectTScheduleConfigVo"/>
+        <where>  
+            <if test="deptId != null  and deptId != ''"> and dept_id = #{deptId}</if>
+            <if test="scheduleType != null "> and schedule_type = #{scheduleType}</if>
+            <if test="scheduleName != null  and scheduleName != ''"> and schedule_name like concat('%', #{scheduleName}, '%')</if>
+            <if test="createUsername != null  and createUsername != ''"> and create_username like concat('%', #{createUsername}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTScheduleConfigById" parameterType="Long" resultMap="TScheduleConfigResult">
+        <include refid="selectTScheduleConfigVo"/>
+        where schedule_id = #{scheduleId}
+    </select>
+        
+    <insert id="insertTScheduleConfig" parameterType="TScheduleConfig">
+        insert into t_schedule_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scheduleId != null">schedule_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="scheduleType != null">schedule_type,</if>
+            <if test="scheduleName != null">schedule_name,</if>
+            <if test="scheduleFrequency != null">schedule_frequency,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="createUsername != null">create_username,</if>
+            <if test="applyRange != null">apply_range,</if>
+            <if test="applyStandard != null">apply_standard,</if>
+            <if test="applyObject != null">apply_object,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+            <if test="state != null">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="scheduleId != null">#{scheduleId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="scheduleType != null">#{scheduleType},</if>
+            <if test="scheduleName != null">#{scheduleName},</if>
+            <if test="scheduleFrequency != null">#{scheduleFrequency},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="createUsername != null">#{createUsername},</if>
+            <if test="applyRange != null">#{applyRange},</if>
+            <if test="applyStandard != null">#{applyStandard},</if>
+            <if test="applyObject != null">#{applyObject},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+            <if test="state != null">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTScheduleConfig" parameterType="TScheduleConfig">
+        update t_schedule_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="scheduleType != null">schedule_type = #{scheduleType},</if>
+            <if test="scheduleName != null">schedule_name = #{scheduleName},</if>
+            <if test="scheduleFrequency != null">schedule_frequency = #{scheduleFrequency},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="createUsername != null">create_username = #{createUsername},</if>
+            <if test="applyRange != null">apply_range = #{applyRange},</if>
+            <if test="applyStandard != null">apply_standard = #{applyStandard},</if>
+            <if test="applyObject != null">apply_object = #{applyObject},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where schedule_id = #{scheduleId}
+    </update>
+
+    <delete id="deleteTScheduleConfigById" parameterType="Long">
+        delete from t_schedule_config where schedule_id = #{scheduleId}
+    </delete>
+
+    <delete id="deleteTScheduleConfigByIds" parameterType="String">
+        delete from t_schedule_config where schedule_id in 
+        <foreach item="scheduleId" collection="array" open="(" separator="," close=")">
+            #{scheduleId}
+        </foreach>
+    </delete>
+</mapper>

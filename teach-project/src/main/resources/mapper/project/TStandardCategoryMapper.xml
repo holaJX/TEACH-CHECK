@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TStandardCategoryMapper">
+    
+    <resultMap type="TStandardCategory" id="TStandardCategoryResult">
+        <result property="standardId"    column="standard_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="name"    column="name"    />
+        <result property="proportion"    column="proportion"    />
+        <result property="standardReference"    column="standard_reference"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="acceptanceName"    column="acceptance_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="acceptanceSupervise"    column="acceptance_supervise"    />
+        <result property="level"    column="level"    />
+        <result property="acceptanceMethod"    column="acceptance_method"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="recordTemplate"    column="record_template"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deptType"    column="dept_type"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="placeType"    column="place_type"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="technicalReq"    column="technical_req"    />
+        <result property="remark"    column="remark"    />
+        <result property="typicalProblem"    column="typical_problem"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="state"    column="state"    />
+        <result property="applyProject"    column="apply_project"    />
+        <result property="samplingReq"    column="sampling_req"    />
+        <result property="levelACount"    column="level_a_count"    />
+        <result property="levelBCount"    column="level_b_count"    />
+        <result property="levelCCount"    column="level_c_count"    />
+    </resultMap>
+
+    <sql id="selectTStandardCategoryVo">
+        select standard_id, parent_id, name, proportion, standard_reference, ancestors, acceptance_name, order_num, acceptance_supervise, level, acceptance_method, create_by, record_template, create_time, dept_type, update_by, place_type, update_time, technical_req, remark, typical_problem, del_flag, state, apply_project, sampling_req, level_a_count, level_b_count, level_c_count from t_standard_category
+    </sql>
+
+    <select id="selectTStandardCategoryList" parameterType="TStandardCategory" resultMap="TStandardCategoryResult">
+        <include refid="selectTStandardCategoryVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="standardReference != null  and standardReference != ''"> and standard_reference = #{standardReference}</if>
+            <if test="level != null"> and level = #{level}</if>
+            <if test="acceptanceName != null  and acceptanceName != ''"> and acceptance_name like concat('%', #{acceptanceName}, '%')</if>
+            <if test="ancestors != null  and ancestors != ''"> and find_in_set(#{ancestors},ancestors)</if>
+        </where>
+    </select>
+    
+    <select id="selectTStandardCategoryById" parameterType="Long" resultMap="TStandardCategoryResult">
+        <include refid="selectTStandardCategoryVo"/>
+        where standard_id = #{standardId}
+    </select>
+        
+    <insert id="insertTStandardCategory" parameterType="TStandardCategory">
+        insert into t_standard_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="standardId != null">standard_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="proportion != null">proportion,</if>
+            <if test="standardReference != null and standardReference != ''">standard_reference,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="acceptanceName != null and acceptanceName != ''">acceptance_name,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="acceptanceSupervise != null">acceptance_supervise,</if>
+            <if test="level != null">level,</if>
+            <if test="acceptanceMethod != null">acceptance_method,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="recordTemplate != null">record_template,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deptType != null">dept_type,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="placeType != null">place_type,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="technicalReq != null">technical_req,</if>
+            <if test="remark != null">remark,</if>
+            <if test="typicalProblem != null">typical_problem,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="state != null">state,</if>
+            <if test="applyProject != null">apply_project,</if>
+            <if test="samplingReq != null">sampling_req,</if>
+            <if test="levelACount != null">level_a_count,</if>
+            <if test="levelBCount != null">level_b_count,</if>
+            <if test="levelCCount != null">level_c_count,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="standardId != null">#{standardId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="proportion != null">#{proportion},</if>
+            <if test="standardReference != null and standardReference != ''">#{standardReference},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="acceptanceName != null and acceptanceName != ''">#{acceptanceName},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="acceptanceSupervise != null">#{acceptanceSupervise},</if>
+            <if test="level != null">#{level},</if>
+            <if test="acceptanceMethod != null">#{acceptanceMethod},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="recordTemplate != null">#{recordTemplate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="deptType != null">#{deptType},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="placeType != null">#{placeType},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="technicalReq != null">#{technicalReq},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="typicalProblem != null">#{typicalProblem},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="state != null">#{state},</if>
+            <if test="applyProject != null">#{applyProject},</if>
+            <if test="samplingReq != null">#{samplingReq},</if>
+            <if test="levelACount != null">#{levelACount},</if>
+            <if test="levelBCount != null">#{levelBCount},</if>
+            <if test="levelCCount != null">#{levelCCount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTStandardCategory" parameterType="TStandardCategory">
+        update t_standard_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="proportion != null">proportion = #{proportion},</if>
+            <if test="standardReference != null and standardReference != ''">standard_reference = #{standardReference},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="acceptanceName != null and acceptanceName != ''">acceptance_name = #{acceptanceName},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="acceptanceSupervise != null">acceptance_supervise = #{acceptanceSupervise},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="acceptanceMethod != null">acceptance_method = #{acceptanceMethod},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="recordTemplate != null">record_template = #{recordTemplate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="deptType != null">dept_type = #{deptType},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="placeType != null">place_type = #{placeType},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="technicalReq != null">technical_req = #{technicalReq},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="typicalProblem != null">typical_problem = #{typicalProblem},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="applyProject != null">apply_project = #{applyProject},</if>
+            <if test="samplingReq != null">sampling_req = #{samplingReq},</if>
+            <if test="levelACount != null">level_a_count = #{levelACount},</if>
+            <if test="levelBCount != null">level_b_count = #{levelBCount},</if>
+            <if test="levelCCount != null">level_c_count = #{levelCCount},</if>
+        </trim>
+        where standard_id = #{standardId}
+    </update>
+
+    <delete id="deleteTStandardCategoryById" parameterType="Long">
+        delete from t_standard_category where standard_id = #{standardId}
+    </delete>
+
+    <delete id="deleteTStandardCategoryByIds" parameterType="String">
+        delete from t_standard_category where standard_id in 
+        <foreach item="standardId" collection="array" open="(" separator="," close=")">
+            #{standardId}
+        </foreach>
+    </delete>
+</mapper>

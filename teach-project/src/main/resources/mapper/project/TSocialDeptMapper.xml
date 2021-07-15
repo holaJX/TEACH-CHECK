@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TSocialDeptMapper">
+    
+    <resultMap type="TSocialDept" id="TSocialDeptResult">
+        <result property="socialDeptId"    column="social_dept_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="serviceDeptIds"    column="service_dept_ids"    />
+        <result property="deptType"    column="dept_type"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="leader"    column="leader"    />
+        <result property="phone"    column="phone"    />
+        <result property="districtCode"    column="district_code"    />
+        <result property="detailedAddress"    column="detailed_address"    />
+        <result property="creditCode"    column="credit_code"    />
+        <result property="parentName"    column="parent_name"    />
+        <result property="industryType"    column="industry_type"    />
+        <result property="coversArea"    column="covers_area"    />
+        <result property="buildArea"    column="build_area"    />
+        <result property="workerNum"    column="worker_num"    />
+        <result property="fireSupervise"    column="fire_supervise"    />
+        <result property="deptImage"    column="dept_image"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectTSocialDeptVo">
+        select social_dept_id,dept_id, parent_id, ancestors, service_dept_ids, dept_type, dept_name, order_num, leader, phone, district_code, detailed_address, credit_code, parent_name, industry_type, covers_area, build_area, worker_num, fire_supervise, dept_image, create_by, create_time, update_by, update_time, remark, del_flag, state from t_social_dept
+    </sql>
+
+    <select id="selectTSocialDeptList" parameterType="TSocialDept" resultMap="TSocialDeptResult">
+        <include refid="selectTSocialDeptVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="serviceDeptIds != null  and serviceDeptIds != ''"> and service_dept_ids = #{serviceDeptIds}</if>
+            <if test="deptType != null  and deptType != ''"> and dept_type = #{deptType}</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="leader != null  and leader != ''"> and leader = #{leader}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="districtCode != null  and districtCode != ''"> and district_code = #{districtCode}</if>
+            <if test="detailedAddress != null  and detailedAddress != ''"> and detailed_address = #{detailedAddress}</if>
+            <if test="creditCode != null  and creditCode != ''"> and credit_code = #{creditCode}</if>
+            <if test="parentName != null "> and parent_name like concat('%', #{parentName}, '%')</if>
+            <if test="industryType != null  and industryType != ''"> and industry_type = #{industryType}</if>
+            <if test="coversArea != null "> and covers_area = #{coversArea}</if>
+            <if test="buildArea != null "> and build_area = #{buildArea}</if>
+            <if test="workerNum != null "> and worker_num = #{workerNum}</if>
+            <if test="fireSupervise != null  and fireSupervise != ''"> and fire_supervise = #{fireSupervise}</if>
+            <if test="deptImage != null  and deptImage != ''"> and dept_image = #{deptImage}</if>
+            <if test="state != null "> and state = #{state}</if>
+        </where>
+    </select>
+    
+    <select id="selectTSocialDeptById" parameterType="Long" resultMap="TSocialDeptResult">
+        <include refid="selectTSocialDeptVo"/>
+        where dept_id = #{deptId}
+    </select>
+        
+    <insert id="insertTSocialDept" parameterType="TSocialDept" useGeneratedKeys="true" keyProperty="deptId">
+        insert into t_social_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="socialDeptId != null">social_dept_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="serviceDeptIds != null">service_dept_ids,</if>
+            <if test="deptType != null">dept_type,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="leader != null">leader,</if>
+            <if test="phone != null">phone,</if>
+            <if test="districtCode != null">district_code,</if>
+            <if test="detailedAddress != null">detailed_address,</if>
+            <if test="creditCode != null">credit_code,</if>
+            <if test="parentName != null">parent_name,</if>
+            <if test="industryType != null">industry_type,</if>
+            <if test="coversArea != null">covers_area,</if>
+            <if test="buildArea != null">build_area,</if>
+            <if test="workerNum != null">worker_num,</if>
+            <if test="fireSupervise != null">fire_supervise,</if>
+            <if test="deptImage != null">dept_image,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="state != null">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="socialDeptId != null">#{socialDeptId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="serviceDeptIds != null">#{serviceDeptIds},</if>
+            <if test="deptType != null">#{deptType},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="leader != null">#{leader},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="districtCode != null">#{districtCode},</if>
+            <if test="detailedAddress != null">#{detailedAddress},</if>
+            <if test="creditCode != null">#{creditCode},</if>
+            <if test="parentName != null">#{parentName},</if>
+            <if test="industryType != null">#{industryType},</if>
+            <if test="coversArea != null">#{coversArea},</if>
+            <if test="buildArea != null">#{buildArea},</if>
+            <if test="workerNum != null">#{workerNum},</if>
+            <if test="fireSupervise != null">#{fireSupervise},</if>
+            <if test="deptImage != null">#{deptImage},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="state != null">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSocialDept" parameterType="TSocialDept">
+        update t_social_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="serviceDeptIds != null">service_dept_ids = #{serviceDeptIds},</if>
+            <if test="deptType != null">dept_type = #{deptType},</if>
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="districtCode != null">district_code = #{districtCode},</if>
+            <if test="detailedAddress != null">detailed_address = #{detailedAddress},</if>
+            <if test="creditCode != null">credit_code = #{creditCode},</if>
+            <if test="parentName != null">parent_name = #{parentName},</if>
+            <if test="industryType != null">industry_type = #{industryType},</if>
+            <if test="coversArea != null">covers_area = #{coversArea},</if>
+            <if test="buildArea != null">build_area = #{buildArea},</if>
+            <if test="workerNum != null">worker_num = #{workerNum},</if>
+            <if test="fireSupervise != null">fire_supervise = #{fireSupervise},</if>
+            <if test="deptImage != null">dept_image = #{deptImage},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where dept_id = #{deptId}
+    </update>
+
+    <delete id="deleteTSocialDeptById" parameterType="Long">
+        delete from t_social_dept where dept_id = #{deptId}
+    </delete>
+
+    <delete id="deleteTSocialDeptByIds" parameterType="String">
+        delete from t_social_dept where dept_id in 
+        <foreach item="deptId" collection="array" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+    </delete>
+</mapper>

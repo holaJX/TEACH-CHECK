@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.system.mapper.SysCertificateMapper">
+    
+    <resultMap type="SysCertificate" id="SysCertificateResult">
+        <result property="certificateId"    column="certificate_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="certificateCode"    column="certificate_code"    />
+        <result property="certificateName"    column="certificate_name"    />
+        <result property="certificateType"    column="certificate_type"    />
+        <result property="certificateFrontUrl"    column="certificate_front_url"    />
+        <result property="certificateBackUrl"    column="certificate_back_url"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysCertificateVo">
+        select certificate_id, user_id, certificate_code, certificate_name, certificate_type, certificate_front_url, certificate_back_url, create_by, create_time, update_by, update_time, remark from sys_certificate
+    </sql>
+
+    <select id="selectSysCertificateList" parameterType="SysCertificate" resultMap="SysCertificateResult">
+        <include refid="selectSysCertificateVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="certificateCode != null  and certificateCode != ''"> and certificate_code = #{certificateCode}</if>
+            <if test="certificateName != null  and certificateName != ''"> and certificate_name like concat('%', #{certificateName}, '%')</if>
+            <if test="certificateType != null  and certificateType != ''"> and certificate_type = #{certificateType}</if>
+            <if test="certificateFrontUrl != null  and certificateFrontUrl != ''"> and certificate_front_url = #{certificateFrontUrl}</if>
+            <if test="certificateBackUrl != null  and certificateBackUrl != ''"> and certificate_back_url = #{certificateBackUrl}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCertificateById" parameterType="Long" resultMap="SysCertificateResult">
+        <include refid="selectSysCertificateVo"/>
+        where certificate_id = #{certificateId}
+    </select>
+        
+    <insert id="insertSysCertificate" parameterType="SysCertificate">
+        insert into sys_certificate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="certificateId != null">certificate_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="certificateCode != null">certificate_code,</if>
+            <if test="certificateName != null">certificate_name,</if>
+            <if test="certificateType != null">certificate_type,</if>
+            <if test="certificateFrontUrl != null">certificate_front_url,</if>
+            <if test="certificateBackUrl != null">certificate_back_url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="certificateId != null">#{certificateId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="certificateCode != null">#{certificateCode},</if>
+            <if test="certificateName != null">#{certificateName},</if>
+            <if test="certificateType != null">#{certificateType},</if>
+            <if test="certificateFrontUrl != null">#{certificateFrontUrl},</if>
+            <if test="certificateBackUrl != null">#{certificateBackUrl},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCertificate" parameterType="SysCertificate">
+        update sys_certificate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="certificateCode != null">certificate_code = #{certificateCode},</if>
+            <if test="certificateName != null">certificate_name = #{certificateName},</if>
+            <if test="certificateType != null">certificate_type = #{certificateType},</if>
+            <if test="certificateFrontUrl != null">certificate_front_url = #{certificateFrontUrl},</if>
+            <if test="certificateBackUrl != null">certificate_back_url = #{certificateBackUrl},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where certificate_id = #{certificateId}
+    </update>
+
+    <delete id="deleteSysCertificateById" parameterType="Long">
+        delete from sys_certificate where certificate_id = #{certificateId}
+    </delete>
+
+    <delete id="deleteSysCertificateByIds" parameterType="String">
+        delete from sys_certificate where certificate_id in 
+        <foreach item="certificateId" collection="array" open="(" separator="," close=")">
+            #{certificateId}
+        </foreach>
+    </delete>
+</mapper>

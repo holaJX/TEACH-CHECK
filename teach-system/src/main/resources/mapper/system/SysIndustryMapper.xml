@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.system.mapper.SysIndustryMapper">
+    
+    <resultMap type="SysIndustry" id="SysIndustryResult">
+        <result property="industryId"    column="industry_id"    />
+        <result property="name"    column="name"    />
+        <result property="deptIds"    column="dept_ids"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysIndustryVo">
+        select industry_id, name, dept_ids, create_by, create_time, update_by, update_time, remark from sys_industry
+    </sql>
+
+    <select id="selectSysIndustryList" parameterType="SysIndustry" resultMap="SysIndustryResult">
+        <include refid="selectSysIndustryVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="deptIds != null  and deptIds != ''"> and dept_ids = #{deptIds}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysIndustryById" parameterType="Long" resultMap="SysIndustryResult">
+        <include refid="selectSysIndustryVo"/>
+        where industry_id = #{industryId}
+    </select>
+        
+    <insert id="insertSysIndustry" parameterType="SysIndustry" useGeneratedKeys="true" keyProperty="industryId">
+        insert into sys_industry
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="deptIds != null">dept_ids,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="deptIds != null">#{deptIds},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysIndustry" parameterType="SysIndustry">
+        update sys_industry
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="deptIds != null">dept_ids = #{deptIds},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where industry_id = #{industryId}
+    </update>
+
+    <delete id="deleteSysIndustryById" parameterType="Long">
+        delete from sys_industry where industry_id = #{industryId}
+    </delete>
+
+    <delete id="deleteSysIndustryByIds" parameterType="String">
+        delete from sys_industry where industry_id in 
+        <foreach item="industryId" collection="array" open="(" separator="," close=")">
+            #{industryId}
+        </foreach>
+    </delete>
+</mapper>

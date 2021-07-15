@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TDeptConstructMapper">
+    
+    <resultMap type="TDeptConstruct" id="TDeptConstructResult">
+        <result property="constructId"    column="construct_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="constructType"    column="construct_type"    />
+        <result property="useNature"    column="use_nature"    />
+        <result property="buildName"    column="build_name"    />
+        <result property="refractoryLevel"    column="refractory_level"    />
+        <result property="structureType"    column="structure_type"    />
+        <result property="upperNumber"    column="upper_number"    />
+        <result property="underNumber"    column="under_number"    />
+        <result property="buildHeight"    column="build_height"    />
+        <result property="buildLength"    column="build_length"    />
+        <result property="coversArea"    column="covers_area"    />
+        <result property="floorArea"    column="floor_area"    />
+        <result property="underFloorArea"    column="under_floor_area"    />
+        <result property="storagePosition"    column="storage_position"    />
+        <result property="storageSetType"    column="storage_set_type"    />
+        <result property="storageType"    column="storage_type"    />
+        <result property="storageMaterialName"    column="storage_material_name"    />
+        <result property="storageTotalCapacity"    column="storage_total_capacity"    />
+        <result property="yardMaterialName"    column="yard_material_name"    />
+        <result property="yardName"    column="yard_name"    />
+        <result property="yardTotalCapacity"    column="yard_total_capacity"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectTDeptConstructVo">
+        select construct_id, dept_id, construct_type, use_nature, build_name, refractory_level, structure_type, upper_number, under_number, build_height, build_length, covers_area, floor_area, under_floor_area, storage_position, storage_set_type, storage_type, storage_material_name, storage_total_capacity, yard_material_name, yard_name, yard_total_capacity, create_by, create_time, update_by, update_time, remark, delete_flag, state from t_dept_construct
+    </sql>
+
+    <select id="selectTDeptConstructList" parameterType="TDeptConstruct" resultMap="TDeptConstructResult">
+        <include refid="selectTDeptConstructVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="constructType != null "> and construct_type = #{constructType}</if>
+            <if test="useNature != null "> and use_nature = #{useNature}</if>
+            <if test="buildName != null  and buildName != ''"> and build_name like concat('%', #{buildName}, '%')</if>
+            <if test="refractoryLevel != null  and refractoryLevel != ''"> and refractory_level = #{refractoryLevel}</if>
+            <if test="structureType != null  and structureType != ''"> and structure_type = #{structureType}</if>
+            <if test="upperNumber != null "> and upper_number = #{upperNumber}</if>
+            <if test="underNumber != null "> and under_number = #{underNumber}</if>
+            <if test="buildHeight != null "> and build_height = #{buildHeight}</if>
+            <if test="buildLength != null "> and build_length = #{buildLength}</if>
+            <if test="coversArea != null "> and covers_area = #{coversArea}</if>
+            <if test="floorArea != null "> and floor_area = #{floorArea}</if>
+            <if test="underFloorArea != null "> and under_floor_area = #{underFloorArea}</if>
+            <if test="storagePosition != null  and storagePosition != ''"> and storage_position = #{storagePosition}</if>
+            <if test="storageSetType != null  and storageSetType != ''"> and storage_set_type = #{storageSetType}</if>
+            <if test="storageType != null  and storageType != ''"> and storage_type = #{storageType}</if>
+            <if test="storageMaterialName != null  and storageMaterialName != ''"> and storage_material_name like concat('%', #{storageMaterialName}, '%')</if>
+            <if test="storageTotalCapacity != null "> and storage_total_capacity = #{storageTotalCapacity}</if>
+            <if test="yardMaterialName != null  and yardMaterialName != ''"> and yard_material_name like concat('%', #{yardMaterialName}, '%')</if>
+            <if test="yardName != null  and yardName != ''"> and yard_name like concat('%', #{yardName}, '%')</if>
+            <if test="yardTotalCapacity != null  and yardTotalCapacity != ''"> and yard_total_capacity = #{yardTotalCapacity}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+            <if test="state != null "> and state = #{state}</if>
+        </where>
+    </select>
+    
+    <select id="selectTDeptConstructById" parameterType="Long" resultMap="TDeptConstructResult">
+        <include refid="selectTDeptConstructVo"/>
+        where construct_id = #{constructId}
+    </select>
+        
+    <insert id="insertTDeptConstruct" parameterType="TDeptConstruct">
+        insert into t_dept_construct
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="constructId != null">construct_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="constructType != null">construct_type,</if>
+            <if test="useNature != null">use_nature,</if>
+            <if test="buildName != null">build_name,</if>
+            <if test="refractoryLevel != null">refractory_level,</if>
+            <if test="structureType != null">structure_type,</if>
+            <if test="upperNumber != null">upper_number,</if>
+            <if test="underNumber != null">under_number,</if>
+            <if test="buildHeight != null">build_height,</if>
+            <if test="buildLength != null">build_length,</if>
+            <if test="coversArea != null">covers_area,</if>
+            <if test="floorArea != null">floor_area,</if>
+            <if test="underFloorArea != null">under_floor_area,</if>
+            <if test="storagePosition != null">storage_position,</if>
+            <if test="storageSetType != null">storage_set_type,</if>
+            <if test="storageType != null">storage_type,</if>
+            <if test="storageMaterialName != null">storage_material_name,</if>
+            <if test="storageTotalCapacity != null">storage_total_capacity,</if>
+            <if test="yardMaterialName != null">yard_material_name,</if>
+            <if test="yardName != null">yard_name,</if>
+            <if test="yardTotalCapacity != null">yard_total_capacity,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="deleteFlag != null">delete_flag,</if>
+            <if test="state != null">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="constructId != null">#{constructId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="constructType != null">#{constructType},</if>
+            <if test="useNature != null">#{useNature},</if>
+            <if test="buildName != null">#{buildName},</if>
+            <if test="refractoryLevel != null">#{refractoryLevel},</if>
+            <if test="structureType != null">#{structureType},</if>
+            <if test="upperNumber != null">#{upperNumber},</if>
+            <if test="underNumber != null">#{underNumber},</if>
+            <if test="buildHeight != null">#{buildHeight},</if>
+            <if test="buildLength != null">#{buildLength},</if>
+            <if test="coversArea != null">#{coversArea},</if>
+            <if test="floorArea != null">#{floorArea},</if>
+            <if test="underFloorArea != null">#{underFloorArea},</if>
+            <if test="storagePosition != null">#{storagePosition},</if>
+            <if test="storageSetType != null">#{storageSetType},</if>
+            <if test="storageType != null">#{storageType},</if>
+            <if test="storageMaterialName != null">#{storageMaterialName},</if>
+            <if test="storageTotalCapacity != null">#{storageTotalCapacity},</if>
+            <if test="yardMaterialName != null">#{yardMaterialName},</if>
+            <if test="yardName != null">#{yardName},</if>
+            <if test="yardTotalCapacity != null">#{yardTotalCapacity},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="deleteFlag != null">#{deleteFlag},</if>
+            <if test="state != null">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDeptConstruct" parameterType="TDeptConstruct">
+        update t_dept_construct
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="constructType != null">construct_type = #{constructType},</if>
+            <if test="useNature != null">use_nature = #{useNature},</if>
+            <if test="buildName != null">build_name = #{buildName},</if>
+            <if test="refractoryLevel != null">refractory_level = #{refractoryLevel},</if>
+            <if test="structureType != null">structure_type = #{structureType},</if>
+            <if test="upperNumber != null">upper_number = #{upperNumber},</if>
+            <if test="underNumber != null">under_number = #{underNumber},</if>
+            <if test="buildHeight != null">build_height = #{buildHeight},</if>
+            <if test="buildLength != null">build_length = #{buildLength},</if>
+            <if test="coversArea != null">covers_area = #{coversArea},</if>
+            <if test="floorArea != null">floor_area = #{floorArea},</if>
+            <if test="underFloorArea != null">under_floor_area = #{underFloorArea},</if>
+            <if test="storagePosition != null">storage_position = #{storagePosition},</if>
+            <if test="storageSetType != null">storage_set_type = #{storageSetType},</if>
+            <if test="storageType != null">storage_type = #{storageType},</if>
+            <if test="storageMaterialName != null">storage_material_name = #{storageMaterialName},</if>
+            <if test="storageTotalCapacity != null">storage_total_capacity = #{storageTotalCapacity},</if>
+            <if test="yardMaterialName != null">yard_material_name = #{yardMaterialName},</if>
+            <if test="yardName != null">yard_name = #{yardName},</if>
+            <if test="yardTotalCapacity != null">yard_total_capacity = #{yardTotalCapacity},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="deleteFlag != null">delete_flag = #{deleteFlag},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where construct_id = #{constructId}
+    </update>
+
+    <delete id="deleteTDeptConstructById" parameterType="Long">
+        delete from t_dept_construct where construct_id = #{constructId}
+    </delete>
+
+    <delete id="deleteTDeptConstructByIds" parameterType="String">
+        delete from t_dept_construct where construct_id in 
+        <foreach item="constructId" collection="array" open="(" separator="," close=")">
+            #{constructId}
+        </foreach>
+    </delete>
+</mapper>

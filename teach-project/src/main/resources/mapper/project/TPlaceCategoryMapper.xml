@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TPlaceCategoryMapper">
+    
+    <resultMap type="TPlaceCategory" id="TPlaceCategoryResult">
+        <result property="placeId"    column="place_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="companyType"    column="company_type"    />
+        <result property="name"    column="name"    />
+        <result property="isCommon"    column="is_common"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="level"    column="level"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectTPlaceCategoryVo">
+        select place_id, parent_id, company_type, name, is_common, order_num, ancestors, level, create_by, create_time, update_by, update_time, remark, del_flag, state from t_place_category
+    </sql>
+
+    <select id="selectTPlaceCategoryList" parameterType="TPlaceCategory" resultMap="TPlaceCategoryResult">
+        <include refid="selectTPlaceCategoryVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="companyType != null  and companyType != ''"> and company_type = #{companyType}</if>
+            <if test="companyTypes != null">
+                <foreach item="item" collection="companyTypes" index="index" open=" AND (" close=")" separator=" AND ">
+                    find_in_set(#{item},  company_type)
+                </foreach>
+            </if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="isCommon != null  and isCommon != ''"> or is_common = #{isCommon}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="state != null "> and state = #{state}</if>
+        </where>
+    </select>
+    
+    <select id="selectTPlaceCategoryById" parameterType="Long" resultMap="TPlaceCategoryResult">
+        <include refid="selectTPlaceCategoryVo"/>
+        where place_id = #{placeId}
+    </select>
+
+    <select id="selectChildrenTPlaceCategoryById" parameterType="Long" resultMap="TPlaceCategoryResult">
+        <include refid="selectTPlaceCategoryVo"/>
+        where find_in_set(#{placeId}, ancestors)
+    </select>
+        
+    <insert id="insertTPlaceCategory" parameterType="TPlaceCategory">
+        insert into t_place_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="placeId != null">place_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="companyType != null">company_type,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="isCommon != null and isCommon != ''">is_common,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="level != null">level,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="state != null">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="placeId != null">#{placeId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="companyType != null">#{companyType},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="isCommon != null and isCommon != ''">#{isCommon},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="level != null">#{level},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="state != null">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTPlaceCategory" parameterType="TPlaceCategory">
+        update t_place_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="companyType != null">company_type = #{companyType},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="isCommon != null and isCommon != ''">is_common = #{isCommon},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where place_id = #{placeId}
+    </update>
+
+    <update id="updateTPlaceCategoryChildren" parameterType="java.util.List">
+        update t_place_category set ancestors =
+        <foreach collection="places" item="item" index="index" separator=" " open="case place_id" close="end">
+            when #{item.placeId} then #{item.ancestors}
+        </foreach>
+        where place_id in
+        <foreach collection="places" item="item" index="index" separator="," open="(" close=")">
+            #{item.placeId}
+        </foreach>
+    </update>
+
+    <delete id="deleteTPlaceCategoryById" parameterType="Long">
+        delete from t_place_category where place_id = #{placeId}
+    </delete>
+
+    <delete id="deleteTPlaceCategoryByIds" parameterType="String">
+        delete from t_place_category where place_id in 
+        <foreach item="placeId" collection="array" open="(" separator="," close=")">
+            #{placeId}
+        </foreach>
+    </delete>
+</mapper>

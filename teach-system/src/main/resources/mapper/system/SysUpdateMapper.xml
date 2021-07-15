@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.system.mapper.SysUpdateMapper">
+    
+    <resultMap type="SysUpdate" id="SysUpdateResult">
+        <result property="updateId"    column="update_id"    />
+        <result property="version"    column="version"    />
+        <result property="content"    column="content"    />
+        <result property="appUrl"    column="app_url"    />
+        <result property="isLast"    column="is_last"    />
+        <result property="qrcodeUrl"    column="qrcode_url"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectSysUpdateVo">
+        select update_id, version, content, app_url, is_last, qrcode_url, create_by, create_time, update_by, update_time, remark, del_flag, state from sys_update
+    </sql>
+
+    <select id="selectSysUpdateList" parameterType="SysUpdate" resultMap="SysUpdateResult">
+        <include refid="selectSysUpdateVo"/>
+        <where>  
+            <if test="version != null  and version != ''"> and version = #{version}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="appUrl != null  and appUrl != ''"> and app_url = #{appUrl}</if>
+            <if test="isLast != null  and isLast != ''"> and is_last = #{isLast}</if>
+            <if test="qrcodeUrl != null  and qrcodeUrl != ''"> and qrcode_url = #{qrcodeUrl}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysUpdateById" parameterType="Long" resultMap="SysUpdateResult">
+        <include refid="selectSysUpdateVo"/>
+        where update_id = #{updateId}
+    </select>
+        
+    <insert id="insertSysUpdate" parameterType="SysUpdate" useGeneratedKeys="true" keyProperty="updateId">
+        insert into sys_update
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="version != null">version,</if>
+            <if test="content != null">content,</if>
+            <if test="appUrl != null">app_url,</if>
+            <if test="isLast != null">is_last,</if>
+            <if test="qrcodeUrl != null">qrcode_url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="state != null">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="version != null">#{version},</if>
+            <if test="content != null">#{content},</if>
+            <if test="appUrl != null">#{appUrl},</if>
+            <if test="isLast != null">#{isLast},</if>
+            <if test="qrcodeUrl != null">#{qrcodeUrl},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="state != null">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysUpdate" parameterType="SysUpdate">
+        update sys_update
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="version != null">version = #{version},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="appUrl != null">app_url = #{appUrl},</if>
+            <if test="isLast != null">is_last = #{isLast},</if>
+            <if test="qrcodeUrl != null">qrcode_url = #{qrcodeUrl},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where update_id = #{updateId}
+    </update>
+
+    <delete id="deleteSysUpdateById" parameterType="Long">
+        delete from sys_update where update_id = #{updateId}
+    </delete>
+
+    <delete id="deleteSysUpdateByIds" parameterType="String">
+        delete from sys_update where update_id in 
+        <foreach item="updateId" collection="array" open="(" separator="," close=")">
+            #{updateId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlzt.project.mapper.TCompanyCategoryMapper">
+    
+    <resultMap type="TCompanyCategory" id="TCompanyCategoryResult">
+        <result property="companyId"    column="company_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="name"    column="name"    />
+        <result property="keyName"    column="key_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="level"    column="level"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="state"    column="state"    />
+    </resultMap>
+
+    <sql id="selectTCompanyCategoryVo">
+        select company_id, parent_id, name, key_name, order_num, ancestors, level, create_by, create_time, update_by, update_time, remark, del_flag, state from t_company_category
+    </sql>
+
+    <select id="selectTCompanyCategoryList" parameterType="TCompanyCategory" resultMap="TCompanyCategoryResult">
+        <include refid="selectTCompanyCategoryVo"/>
+        <where>  
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="keyName != null  and keyName != ''"> and key_name like concat('%', #{keyName}, '%')</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="ancestors != null  and ancestors != ''"> and ancestors = #{ancestors}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="state != null "> and state = #{state}</if>
+        </where>
+    </select>
+    
+    <select id="selectTCompanyCategoryById" parameterType="Long" resultMap="TCompanyCategoryResult">
+        <include refid="selectTCompanyCategoryVo"/>
+        where company_id = #{companyId}
+    </select>
+
+    <select id="selectTCompanyCategoryByKeyName" parameterType="String" resultMap="TCompanyCategoryResult">
+        <include refid="selectTCompanyCategoryVo"/>
+        where key_name = #{keyName}
+    </select>
+
+    <select id="selectChildrenTCompanyCategoryById" parameterType="Long" resultMap="TCompanyCategoryResult">
+        <include refid="selectTCompanyCategoryVo"/>
+        where find_in_set(#{companyId}, ancestors)
+    </select>
+        
+    <insert id="insertTCompanyCategory" parameterType="TCompanyCategory">
+        insert into t_company_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null">company_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="keyName != null and keyName != ''">key_name,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="ancestors != null">ancestors,</if>
+            <if test="level != null">level,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="state != null">state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null">#{companyId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="keyName != null and keyName != ''">#{keyName},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="ancestors != null">#{ancestors},</if>
+            <if test="level != null">#{level},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="state != null">#{state},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTCompanyCategory" parameterType="TCompanyCategory">
+        update t_company_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="keyName != null and keyName != ''">key_name = #{keyName},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="ancestors != null">ancestors = #{ancestors},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="state != null">state = #{state},</if>
+        </trim>
+        where company_id = #{companyId}
+    </update>
+
+    <update id="updateTCompanyCategoryChildren" parameterType="java.util.List">
+        update t_company_category set ancestors =
+        <foreach collection="companies" item="item" index="index" separator=" " open="case company_id" close="end">
+            when #{item.companyId} then #{item.ancestors}
+        </foreach>
+        where company_id in
+        <foreach collection="companies" item="item" index="index" separator="," open="(" close=")">
+            #{item.companyId}
+        </foreach>
+    </update>
+
+    <delete id="deleteTCompanyCategoryById" parameterType="Long">
+        delete from t_company_category where company_id = #{companyId}
+    </delete>
+
+    <delete id="deleteTCompanyCategoryByIds" parameterType="String">
+        delete from t_company_category where company_id in 
+        <foreach item="companyId" collection="array" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
+    </delete>
+</mapper>
